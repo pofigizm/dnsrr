@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - '80:80'
+      - '8020:8020'
+
+  front:
+    build: ./frontend
+    ports:
+      - '8080'
+    volumes:
+      - ./frontend:/src
+
+  back:
+    build: ./backend
+    ports:
+      - '3000'
+    volumes:
+      - ./backend:/src
+
+  redis:
+    image: redis
+    ports:
+      - '6379'
+    volumes:
+      - ./redis:/data

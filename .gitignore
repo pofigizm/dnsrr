@@ -1,0 +1,3 @@
+./redis/
+node_modules/
+dist/
