@@ -5,7 +5,6 @@ services:
     build: ./nginx
     ports:
       - '80:80'
-      - '8020:8020'
 
   front:
     build: ./frontend
