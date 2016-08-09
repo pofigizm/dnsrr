@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "scripts": {
-    "start": "API_HOST=http://localhost:80 node server/index.js"
+    "start": "DEBUG=frontend:* API_HOST=http://localhost:80 node server/index.js"
   },
   "dependencies": {
     "babel-core": "6.13.2",
@@ -14,6 +14,7 @@
     "babel-preset-stage-1": "6.13.0",
     "babel-register": "6.11.6",
     "babel-runtime": "6.11.6",
+    "debug": "2.2.0",
     "express": "4.14.0",
     "react": "15.3.0",
     "react-dom": "15.3.0",
