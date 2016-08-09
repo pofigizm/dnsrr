@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "0.1.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon -L index.js",
     "test": "NODE_ENV=testing babel-tape-runner **/*.test.js | tap-diff"
   },
   "dependencies": {

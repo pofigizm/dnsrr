@@ -7,9 +7,9 @@ ADD nodemon.json nodemon.json
 RUN npm install nodemon -g
 
 ADD package.json package.json
-# RUN npm install --production
+RUN npm install --production
 
 ADD . /src
 EXPOSE 3000
 
-CMD ["nodemon", "/src/index.js"]
+CMD ["node", "/src/index.js"]

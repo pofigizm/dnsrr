@@ -26,13 +26,10 @@ services:
       - '3000'
     container_name: dnsrr-back
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - DEBUG=backend:*
     networks:
       - dnsrr-network
-    volumes:
-      - ./backend:/src
-    command: nodemon -L index.js
 
   redis:
     image: redis

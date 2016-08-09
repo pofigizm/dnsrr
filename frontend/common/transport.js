@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 
 const host = process.env.BROWSER ? window.location.origin : 'http://nginx'
-const socket = io(host, { path: '/ws/socket.io' })
+const socket = io(process.env.API_HOST || host, { path: '/ws/socket.io' })
 
 socket.on('connect_error', () => {
   console.log('connection failed')
