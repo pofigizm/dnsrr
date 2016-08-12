@@ -1,3 +1,4 @@
+import path from 'path'
 import Express from 'express'
 import qs from 'qs' // eslint-disable-line
 
@@ -23,12 +24,17 @@ const handleRender = (req, res) => {
     })
 }
 
-const compiler = webpack(webpackConfig)
-app.use(webpackDevMiddleware(compiler, {
-  noInfo: true,
-  publicPath: webpackConfig.output.publicPath,
-}))
-app.use(webpackHotMiddleware(compiler))
+if (process.env.NODE_ENV === 'production') {
+  app.use('/static', Express.static(path.join(__dirname, '..', 'dist')))
+} else {
+  const compiler = webpack(webpackConfig)
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath,
+  }))
+  app.use(webpackHotMiddleware(compiler))
+}
+
 app.use(handleRender)
 
 app.listen(port, (error) => {

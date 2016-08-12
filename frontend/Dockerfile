@@ -9,4 +9,5 @@ RUN npm install --production
 ADD . /src
 EXPOSE 8080
 
+RUN npm run build
 CMD ["node", "/src/server/index.js"]

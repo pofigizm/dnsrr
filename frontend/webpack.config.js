@@ -1,12 +1,23 @@
 const path = require('path')
 const webpack = require('webpack')
 
+const str = val => JSON.stringify(val)
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const env = {
+  prod: NODE_ENV === 'production',
+  dev: NODE_ENV === 'development',
+}
+console.log(NODE_ENV)
+
 module.exports = {
-  devtool: 'inline-source-map',
-  entry: [
-    'webpack-hot-middleware/client',
-    './client/index.js',
-  ],
+  debug: !env.prod,
+  devtool: !env.prod ? 'eval-source-map' : false,
+  entry: !env.dev ?
+    './client/index.js' :
+    [
+      'webpack-hot-middleware/client',
+      './client/index.js',
+    ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -27,12 +38,23 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        BROWSER: JSON.stringify(true),
-        API_HOST: `'${process.env.API_HOST}'`,
+        BROWSER: str(true),
+        API_HOST: str(process.env.API_HOST),
+        NODE_ENV: str(process.env.NODE_ENV),
       },
     }),
-  ],
+  ].concat(!env.prod ? [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+  ] : [
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compress: {
+        drop_console: true,
+        warnings: false,
+      },
+    }),
+  ]),
 }
