@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react'
 
+const debug = require('debug')('frontend:common:component:Counter')
+
 const Counter = ({
   counter,
   actions,
 }) => {
-  console.log('Counter')
+  debug('render')
   return (
     <p>
       Clicked: {counter} times

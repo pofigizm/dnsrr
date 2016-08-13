@@ -16,6 +16,8 @@ module.exports = {
     './client/index.js' :
     [
       'webpack-hot-middleware/client',
+      'webpack/hot/only-dev-server',
+      'react-hot-loader/patch',
       './client/index.js',
     ],
   output: {
@@ -29,10 +31,6 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel',
         exclude: /node_modules/,
-        include: __dirname,
-        query: {
-          presets: ['react-hmre'],
-        },
       },
     ],
   },

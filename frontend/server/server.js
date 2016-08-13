@@ -1,11 +1,7 @@
+/* eslint-disable global-require */
 import path from 'path'
 import Express from 'express'
 import qs from 'qs' // eslint-disable-line
-
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-import webpackConfig from '../webpack.config'
 
 import api from './api'
 import render from './render'
@@ -27,8 +23,15 @@ const handleRender = (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   app.use('/static', Express.static(path.join(__dirname, '..', 'dist')))
 } else {
+  const webpack = require('webpack')
+  const webpackDevMiddleware = require('webpack-dev-middleware') // eslint-disable-line
+  const webpackHotMiddleware = require('webpack-hot-middleware') // eslint-disable-line
+  const webpackConfig = require('../webpack.config')
+
   const compiler = webpack(webpackConfig)
   app.use(webpackDevMiddleware(compiler, {
+    color: true,
+    hot: true,
     noInfo: true,
     publicPath: webpackConfig.output.publicPath,
   }))

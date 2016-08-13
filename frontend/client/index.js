@@ -1,20 +1,39 @@
+/* eslint-disable global-require */
 import 'babel-polyfill'
 import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
+import ReactDOM from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
+
 import configureStore from '../common/store/configureStore'
-import App from '../common/containers/App'
 import { subscribe } from '../common/actions/counter'
+import Root from '../common/Root'
+
+const debug = require('debug')('frontend:client:index')
 
 const preloadedState = window.__PRELOADED_STATE__ // eslint-disable-line
 const store = configureStore(preloadedState)
-const rootElement = document.getElementById('app')
+store.dispatch(subscribe())
 
-render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
+const container = document.getElementById('app')
+
+debug('Root loaded')
+ReactDOM.render(
+  <AppContainer>
+    <Root {...{ store, history }} />
+  </AppContainer>,
+  container,
 )
 
-store.dispatch(subscribe())
+if (module.hot) {
+  module.hot.accept('../common/Root', () => {
+    const NextRoot = require('../common/Root').default
+
+    debug('NextRoot loaded')
+    ReactDOM.render(
+      <AppContainer>
+        <NextRoot {...{ store, history }} />
+      </AppContainer>,
+      container,
+    )
+  })
+}

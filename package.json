@@ -7,7 +7,9 @@
     "backend": "cd backend && npm i; cd ..",
     "postinstall": "npm run frontend && npm run backend && docker-compose build",
     "precommit": "npm run lint",
-    "start": "npm install &&docker-compose up -d && cd frontend && npm start"
+    "dev": "cd frontend && npm start",
+    "start": "npm install && docker-compose up -d",
+    "stop": "docker-compose stop && docker-compose rm -f"
   },
   "devDependencies": {
     "babel-eslint": "6.1.2",
