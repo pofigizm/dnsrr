@@ -4,9 +4,21 @@
 
 Expect `docker` and `docker-compose` is installed
 
+
+## production
+
 ```
-npm install
-npm start
+./start.sh
 ```
 
 open `localhost`
+
+
+## development
+
+```
+npm start       // for prepare and run containers
+npm run dev     // for run frontend dev server (outside container)
+```
+
+open `localhost:8080`
