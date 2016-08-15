@@ -1,14 +1,16 @@
 import io from 'socket.io-client'
 
-const host = process.env.BROWSER ? window.location.origin : 'http://nginx'
+const debug = require('debug')('frontend:common:transport')
+
+const host = __BROWSER__ ? window.location.origin : 'http://nginx'
 const socket = io(process.env.API_HOST || host, { path: '/ws/socket.io' })
 
 socket.on('connect_error', () => {
-  console.log('connection failed')
+  debug('connection failed')
 })
 
 socket.on('connect', () => {
-  console.log('connected')
+  debug('connected')
 })
 
 export const counter = handler => {

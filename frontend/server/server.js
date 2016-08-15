@@ -13,11 +13,10 @@ const port = 8080
 
 const handleRender = (req, res) => {
   debug('Function handlerRender')
-  api.call()
-    .then(result => {
-      const state = { counter: result || 0 }
-      res.send(render(state))
-    })
+
+  Promise.resolve()
+    .then(api.call)
+    .then(render(req.url, res))
 }
 
 if (process.env.NODE_ENV === 'production') {

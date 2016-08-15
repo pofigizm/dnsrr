@@ -38,10 +38,11 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        BROWSER: str(true),
         API_HOST: str(process.env.API_HOST),
         NODE_ENV: str(process.env.NODE_ENV),
       },
+      __BROWSER__: str(true),
+      __DEV__: str(env.dev),
     }),
   ].concat(!env.prod ? [
     new webpack.HotModuleReplacementPlugin(),

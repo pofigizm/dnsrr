@@ -5,7 +5,7 @@ const state = {
 }
 
 const api = {
-  call: () => Promise.resolve(state.counter),
+  call: () => Promise.resolve(state),
 }
 
 // listen socket event via common/transport

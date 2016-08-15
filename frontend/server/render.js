@@ -1,9 +1,10 @@
 import React from 'react'
-import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import { renderToString } from 'react-dom/server'
+import { match, RouterContext } from 'react-router'
 
 import configureStore from '../common/store/configureStore'
-import App from '../common/containers/App'
+import routes from '../common/routes'
 
 const debug = require('debug')('frontend:server:render')
 
@@ -23,17 +24,36 @@ const renderFullPage = (html, state) => (`
   </html>
 `)
 
-const render = state => {
-  debug('Render called with', state)
+const render = (location, res) => state => {
+  debug(`Render called on ${location} with`, state)
 
-  const store = configureStore(state)
-  const html = renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  )
+  match({ routes, location }, (err, redirect, props) => {
+    if (!err && redirect) {
+      debug(`Redirect to ${redirect.pathname + redirect.search}`)
+      res.redirect(redirect.pathname + redirect.search)
+      return
+    }
 
-  return renderFullPage(html, store.getState())
+    let html = ''
+    let initial = {}
+    if (!err || props) {
+      try {
+        debug('Try to render')
+        const store = configureStore({}, state)
+        initial = store.getState()
+        html = renderToString(
+          <Provider store={store}>
+            <RouterContext {...props} />
+          </Provider>
+        )
+      } catch (renderError) {
+        debug('render to string error', renderError)
+      }
+    }
+
+    debug('Sent', html, initial)
+    res.send(renderFullPage(html, initial))
+  })
 }
 
 export default render
