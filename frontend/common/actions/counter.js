@@ -1,7 +1,5 @@
-import * as transport from '../transport'
-
-export const subscribe = () => (dispatch) => {
-  transport.counter(value => {
+export const subscribe = () => (dispatch, getState, { api }) => {
+  api.counter(value => {
     dispatch({
       type: 'COUNTER',
       value,
@@ -9,10 +7,10 @@ export const subscribe = () => (dispatch) => {
   })
 }
 
-export const increment = () => () => {
-  transport.incr()
+export const increment = () => (dispatch, getState, { api }) => {
+  api.incr()
 }
 
-export const decrement = () => () => {
-  transport.decr()
+export const decrement = () => (dispatch, getState, { api }) => {
+  api.decr()
 }

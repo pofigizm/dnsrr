@@ -3,7 +3,8 @@ import path from 'path'
 import Express from 'express'
 import qs from 'qs' // eslint-disable-line
 
-import api from './api'
+import store from '../common/store'
+import { subscribe } from '../common/actions/counter'
 import render from './render'
 
 const debug = require('debug')('frontend:server:server')
@@ -11,12 +12,11 @@ const debug = require('debug')('frontend:server:server')
 const app = new Express()
 const port = 8080
 
+store.dispatch(subscribe())
+
 const handleRender = (req, res) => {
   debug('Function handlerRender')
-
-  Promise.resolve()
-    .then(api.call)
-    .then(render(req.url, res))
+  render(req.url, res)(store)
 }
 
 if (process.env.NODE_ENV === 'production') {

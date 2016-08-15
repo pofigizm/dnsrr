@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
-
 import thunk from 'redux-thunk'
+
 import rootReducer from '../reducers'
+import * as api from '../api'
 
 const configureStore = (history, initialState) => {
   let middlewareList = [
-    thunk,
+    thunk.withExtraArgument({ api }),
     routerMiddleware(history),
   ]
 

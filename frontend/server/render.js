@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 
-import configureStore from '../common/store/configureStore'
 import routes from '../common/routes'
 
 const debug = require('debug')('frontend:server:render')
@@ -24,8 +23,8 @@ const renderFullPage = (html, state) => (`
   </html>
 `)
 
-const render = (location, res) => state => {
-  debug(`Render called on ${location} with`, state)
+const render = (location, res) => store => {
+  debug(`Render called on ${location} with`)
 
   match({ routes, location }, (err, redirect, props) => {
     if (!err && redirect) {
@@ -35,12 +34,11 @@ const render = (location, res) => state => {
     }
 
     let html = ''
-    let initial = {}
+    let state = {}
     if (!err || props) {
       try {
         debug('Try to render')
-        const store = configureStore({}, state)
-        initial = store.getState()
+        state = store.getState()
         html = renderToString(
           <Provider store={store}>
             <RouterContext {...props} />
@@ -51,8 +49,8 @@ const render = (location, res) => state => {
       }
     }
 
-    debug('Sent', html, initial)
-    res.send(renderFullPage(html, initial))
+    debug('Sent', html, state)
+    res.send(renderFullPage(html, state))
   })
 }
 
