@@ -9,33 +9,38 @@ bluebird.promisifyAll(redis.RedisClient.prototype)
 bluebird.promisifyAll(redis.Multi.prototype)
 
 // TODO: catch connection error
-const client = redis.createClient('6379', 'redis')
+const client = redis.createClient('6379', process.env.REDIS_HOST || 'redis')
 
 const port = 3000
 
-const emitCounter = counter => {
+const emitCounter = name => counter => {
   debug('emitting counter', counter)
-  io.sockets.emit('counter', Number(counter))
+  io.sockets.emit('counter', {
+    name,
+    value: Number(counter),
+  })
 }
 
 io.on('connection', socket => {
   debug('incoming connect')
   socket.emit('connected')
-  client.getAsync('counter').then(emitCounter)
 
-  socket.on('get', () => {
+  socket.on('get', name => {
     debug('incoming event get')
-    client.getAsync('counter').then(emitCounter)
+    client.getAsync(`counter:${name}`)
+      .then(emitCounter(name))
   })
 
-  socket.on('incr', () => {
+  socket.on('incr', name => {
     debug('incoming event incr')
-    client.incrAsync('counter').then(emitCounter)
+    client.incrAsync(`counter:${name}`)
+      .then(emitCounter(name))
   })
 
-  socket.on('decr', () => {
+  socket.on('decr', name => {
     debug('incoming event decr')
-    client.incrbyAsync('counter', -1).then(emitCounter)
+    client.incrbyAsync(`counter:${name}`, -1)
+      .then(emitCounter(name))
   })
 })
 

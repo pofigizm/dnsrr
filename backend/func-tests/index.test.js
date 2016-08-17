@@ -12,7 +12,8 @@ const client = redis.createClient('6379', '127.0.0.1')
 
 const before = () => Promise.resolve()
   .then(() => client.flushallAsync())
-  .then(() => client.incrAsync('counter'))
+  .then(() => client.incrAsync('counter:one'))
+  .then(() => client.incrAsync('counter:two'))
 
 const socket = io('http://localhost:3000')
 
@@ -28,22 +29,43 @@ test('get', t => {
   t.plan(1)
 
   before()
-    .then(() => socket.emit('get'))
+    .then(() => socket.emit('get', 'one'))
 
   socket.on('counter', value => {
-    t.equal(value, 1)
+    t.deepEqual(value, {
+      name: 'one',
+      value: 1,
+    })
     socket.removeAllListeners('counter')
   })
 })
 
-test('incr', t => {
+test('incrOne', t => {
   t.plan(1)
 
   before()
-    .then(() => socket.emit('incr'))
+    .then(() => socket.emit('incr', 'one'))
 
   socket.on('counter', value => {
-    t.equal(value, 2)
+    t.deepEqual(value, {
+      name: 'one',
+      value: 2,
+    })
+    socket.removeAllListeners('counter')
+  })
+})
+
+test('incrTwo', t => {
+  t.plan(1)
+
+  before()
+    .then(() => socket.emit('incr', 'two'))
+
+  socket.on('counter', value => {
+    t.deepEqual(value, {
+      name: 'two',
+      value: 2,
+    })
     socket.removeAllListeners('counter')
   })
 })
@@ -52,10 +74,13 @@ test('decr', t => {
   t.plan(1)
 
   before()
-    .then(() => socket.emit('decr'))
+    .then(() => socket.emit('decr', 'one'))
 
   socket.on('counter', value => {
-    t.equal(value, 0)
+    t.deepEqual(value, {
+      name: 'one',
+      value: 0,
+    })
     socket.removeAllListeners('counter')
   })
 })
