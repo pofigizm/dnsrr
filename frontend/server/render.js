@@ -26,7 +26,7 @@ const renderFullPage = (html, state) => (`
 const render = (location, res) => store => {
   debug(`Render called on ${location} with`)
 
-  match({ routes, location }, (err, redirect, props) => {
+  match({ routes: routes(store), location }, (err, redirect, props) => {
     if (!err && redirect) {
       debug(`Redirect to ${redirect.pathname + redirect.search}`)
       res.redirect(redirect.pathname + redirect.search)

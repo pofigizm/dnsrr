@@ -19,6 +19,10 @@ export const counter = handler => {
   })
 }
 
+export const get = value => {
+  socket.emit('get', value)
+}
+
 export const incr = value => {
   socket.emit('incr', value)
 }

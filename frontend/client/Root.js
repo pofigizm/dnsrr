@@ -15,7 +15,7 @@ const RootComponent = ({
 
   return (
     <Provider store={store}>
-      <Router routes={routes} history={history} />
+      <Router routes={routes(store)} history={history} />
     </Provider>
   )
 }

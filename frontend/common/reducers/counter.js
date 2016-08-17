@@ -1,8 +1,11 @@
 
-const counter = (state = 0, action) => {
+const counter = (state = {}, action) => {
   switch (action.type) {
     case 'COUNTER':
-      return action.value
+      return {
+        ...state,
+        [action.name]: action.value,
+      }
     default:
       return state
   }

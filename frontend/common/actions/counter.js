@@ -1,16 +1,21 @@
 export const subscribe = () => (dispatch, getState, { api }) => {
-  api.counter(value => {
+  api.counter(({ name, value }) => {
     dispatch({
       type: 'COUNTER',
+      name,
       value,
     })
   })
 }
 
-export const increment = () => (dispatch, getState, { api }) => {
-  api.incr()
+export const get = name => (dispatch, getState, { api }) => {
+  api.get(name)
 }
 
-export const decrement = () => (dispatch, getState, { api }) => {
-  api.decr()
+export const increment = name => (dispatch, getState, { api }) => {
+  api.incr(name)
+}
+
+export const decrement = name => (dispatch, getState, { api }) => {
+  api.decr(name)
 }
