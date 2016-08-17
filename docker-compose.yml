@@ -8,6 +8,9 @@ services:
     container_name: dnsrr-nginx
     networks:
       - dnsrr-network
+    depends_on:
+      - front
+      - back
 
   front:
     build: ./frontend
@@ -32,6 +35,8 @@ services:
       - dnsrr-network
     volumes:
       - ./backend:/src
+    depends_on:
+      - redis
     command: nodemon -L index.js
 
   redis:
