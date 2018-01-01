@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import path from 'path'
 import Express from 'express'
-import qs from 'qs' // eslint-disable-line
 
 import store from '../common/store'
 import { subscribe } from '../common/actions/counter'

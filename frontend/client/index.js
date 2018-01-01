@@ -19,7 +19,7 @@ const history = syncHistoryWithStore(
 const container = document.getElementById('app')
 
 debug('Root loaded')
-ReactDOM.render(
+ReactDOM.hydrate(
   root(store, history),
   container,
 )
@@ -29,7 +29,7 @@ if (module.hot) {
     const nextRoot = require('./Root').default
 
     debug('NextRoot loaded')
-    ReactDOM.render(
+    ReactDOM.hydrate(
       nextRoot(store, history),
       container,
     )

@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const str = val => JSON.stringify(val)
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -10,7 +11,6 @@ const env = {
 console.log(NODE_ENV)
 
 module.exports = {
-  debug: !env.prod,
   devtool: !env.prod ? 'eval-source-map' : false,
   entry: !env.dev ?
     './client/index.js' :
@@ -29,7 +29,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /node_modules/,
       },
     ],
@@ -46,14 +46,7 @@ module.exports = {
     }),
   ].concat(!env.prod ? [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
   ] : [
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        drop_console: true,
-        warnings: false,
-      },
-    }),
+    new UglifyJSPlugin(),
   ]),
 }
