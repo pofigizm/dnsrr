@@ -1,20 +1,20 @@
 {
   "name": "backend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "start": "nodemon -L index.js",
     "test": "NODE_ENV=testing babel-tape-runner **/*.test.js | tap-diff"
   },
   "dependencies": {
-    "bluebird": "3.4.1",
-    "debug": "2.2.0",
-    "redis": "2.6.2",
-    "socket.io": "1.4.8"
+    "bluebird": "3.5.1",
+    "debug": "3.1.0",
+    "redis": "2.8.0",
+    "socket.io": "2.0.4"
   },
   "devDependencies": {
     "babel-tape-runner": "2.0.1",
-    "socket.io-client": "1.4.8",
+    "socket.io-client": "2.0.4",
     "tap-diff": "0.1.1",
-    "tape": "4.6.0"
+    "tape": "4.8.0"
   }
 }

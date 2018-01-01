@@ -1,16 +1,16 @@
-FROM node:6.3.1
+FROM node:8.9.3-alpine
 
 RUN mkdir /src
 WORKDIR /src
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    vim-nox \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk --no-cache add curl
+RUN apk --no-cache add vim
 
 ADD nodemon.json nodemon.json
 RUN npm install nodemon -g
 
 ADD package.json package.json
+ADD package-lock.json package-lock.json
 RUN npm install --production
 
 ADD . /src
