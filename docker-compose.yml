@@ -40,7 +40,7 @@ services:
     command: nodemon -L index.js
 
   redis:
-    image: redis
+    image: redis:3.2.11-alpine
     ports:
       - '6379'
     container_name: dnsrr-redis

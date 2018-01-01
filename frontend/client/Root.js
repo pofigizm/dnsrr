@@ -20,11 +20,6 @@ const RootComponent = ({
   )
 }
 
-RootComponent.propTypes = {
-  store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-}
-
 const root = (store, history) => (
   <AppContainer>
     <RootComponent {...{ store, history }} />
